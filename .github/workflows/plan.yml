@@ -1,0 +1,41 @@
+name: plan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      VULTR_API_KEY: ${{ secrets.VULTR_API_KEY }}
+    steps:
+      - name: checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: setup
+        id: setup
+        uses: opentofu/setup-opentofu@v1
+      
+      - name: init
+        id: init
+        run: tofu init
+
+      - name: fmt
+        id: fmt
+        continue-on-error: true
+        run: tofu fmt -check
+
+      - name: validate
+        id: validate
+        run: tofu validate
+
+      - name: plan
+        id: plan
+        if: steps.validate.outcome == 'success'
+        run: tofu plan
