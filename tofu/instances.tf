@@ -11,6 +11,9 @@ resource "vultr_instance" "portfolio_instance" {
   backups_schedule {
     type = "daily"
   }
-  ddos_protection  = true
-  activation_email = false
+  ddos_protection   = true
+  activation_email  = false
+  ssh_key_ids       = [vultr_ssh_key.portfolio_key.id]
+  vpc_ids           = [vultr_vpc.portfolio_vpc.id]
+  firewall_group_id = vultr_firewall_group.portfolio_firewallgroup.id
 }
