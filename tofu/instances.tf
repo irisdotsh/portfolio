@@ -2,11 +2,11 @@ resource "vultr_instance" "portfolio_instance" {
   plan                = "vc2-1c-2gb"
   region              = "ord"
   os_id               = 1743
-  label               = "Managed by OpenTofu"
+  label               = "Portfolio Website - Managed by OpenTofu"
   tags                = ["portfolio"]
   hostname            = "irisblankenship.me"
-  enable_ipv6         = true
-  disable_public_ipv4 = true
+  enable_ipv6         = false
+  disable_public_ipv4 = false
   backups             = "enabled"
   backups_schedule {
     type = "daily"
